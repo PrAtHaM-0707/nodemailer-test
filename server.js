@@ -1,36 +1,32 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;  // Use environment PORT for production
+const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
 app.use(bodyParser.json());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://nodemailer-test-seven.vercel.app']
+}));
 
-// Serve the HTML form
-app.use(express.static('public'));
-
-// Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.GMAIL_USER, // Your Gmail address
-    pass: process.env.GMAIL_PASS  // Your Gmail App Password
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
   }
 });
 
-// Route to handle email sending
 app.post('/send-email', async (req, res) => {
   const { email } = req.body;
 
-  // Validate email
   if (!email || !email.includes('@gmail.com')) {
     return res.status(400).json({ error: 'Please provide a valid Gmail address.' });
   }
 
-  // Email options
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: email,
@@ -48,7 +44,6 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
