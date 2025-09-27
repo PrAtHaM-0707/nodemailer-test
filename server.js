@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://your-frontend-url.onrender.com']
+  origin: ['http://localhost:3000', 'https://nodemailer-test-seven.vercel.app']
 }));
 
 app.post('/send-email', async (req, res) => {
