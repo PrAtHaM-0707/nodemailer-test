@@ -28,7 +28,7 @@ app.post('/send-email', async (req, res) => {
   }
 
   const templateParams = {
-    to_email: email,
+    email: email,
     from_email: process.env.SENDER_EMAIL
   };
 
